@@ -2,7 +2,11 @@ import logging
 from typing import List, Annotated
 
 from fastapi import APIRouter, Depends, status, HTTPException
-from app.dependecy import get_category_repo, get_cache_category_repo
+from app.dependecy import (
+    get_category_repo,
+    get_cache_category_repo,
+    get_category_service,
+)
 from app.repository import CategoryRepository
 from app.schema import (
     CategoryResponse,
@@ -10,6 +14,7 @@ from app.schema import (
     UpdateCategoryRequest,
 )
 from app.repository import CategoryCacheRepository
+from app.service import CategoryService
 
 logger = logging.getLogger(__name__)
 
@@ -18,21 +23,9 @@ router = APIRouter(prefix="/category", tags=["Categories"])
 
 @router.get("/", response_model=List[CategoryResponse])
 async def get_all_categories(
-    repo: Annotated[CategoryRepository, Depends(get_category_repo)],
-    cache_repo: Annotated[CategoryCacheRepository, Depends(get_cache_category_repo)],
+    category_service: Annotated[CategoryService, Depends(get_category_service)],
 ):
-    if categories := await cache_repo.get_category():
-        logger.debug("Serving categories from CACHE")
-        return categories
-    else:
-        logger.debug("Fetching all categories")
-        categories = await repo.get_all_categories()
-        logger.debug(f"Found {len(categories)} categories")
-        categories_schema = [
-            CategoryResponse.model_validate(category) for category in categories
-        ]
-        await cache_repo.set_category(categories_schema)
-        return categories_schema
+    return await category_service.get_all_categories()
 
 
 @router.get("/{category_id}", response_model=CategoryResponse)
