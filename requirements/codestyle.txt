@@ -1,0 +1,6 @@
+# Formatting
+black==25.1.0
+click==8.2.1
+
+# Linting
+ruff==0.12.1

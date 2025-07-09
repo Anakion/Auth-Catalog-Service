@@ -1,0 +1,14 @@
+fastapi==0.115.12
+uvicorn[standard]
+
+sqlalchemy==2.0.40
+asyncpg==0.30.0
+alembic==1.14.1
+
+pyjwt==2.9.0
+python-multipart==0.0.20
+passlib==1.7.4
+httpx==0.28.1
+
+pydantic-settings==2.9.1
+python-dotenv==1.0.0
