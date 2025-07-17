@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Sequence, Optional
 from sqlalchemy import select, delete, update
-from app.database import Category
+from app.models import Category
 
 
 class CategoryRepository:

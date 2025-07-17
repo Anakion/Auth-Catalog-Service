@@ -13,10 +13,7 @@ class CategoryCacheRepository:
         category_json = await self.redis.lrange("category", 0, -1)
         if not category_json:
             return None
-        return [
-            CategoryResponse.model_validate_json(cat.decode("utf-8"))
-            for cat in category_json
-        ]
+        return [CategoryResponse.model_validate_json(cat.decode("utf-8")) for cat in category_json]
 
     async def set_category(self, categories: list[CategoryResponse]):
         async with self.redis.pipeline() as pipe:

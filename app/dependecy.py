@@ -5,6 +5,8 @@ from app.database.session import get_db
 from app.repository import CategoryRepository, CategoryCacheRepository
 from app.cache import get_redis_connection
 from app.service import CategoryService
+from repository import UserRepository
+from service.user import UserService
 
 
 async def get_category_repo(db: AsyncSession = Depends(get_db)) -> CategoryRepository:
@@ -24,3 +26,15 @@ async def get_category_service(
         category_repository=category_repository,
         cache_repository=cache_repository,
     )
+
+
+async def get_user_repository(
+    session: AsyncSession = Depends(get_db),
+) -> UserRepository:
+    return UserRepository(session=session)
+
+
+async def get_user_service(
+    user_repository: UserRepository = Depends(get_user_repository),
+) -> UserService:
+    return UserService(user_repository=user_repository)

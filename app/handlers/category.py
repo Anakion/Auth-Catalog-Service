@@ -4,7 +4,6 @@ from typing import List, Annotated
 from fastapi import APIRouter, Depends, status, HTTPException
 from app.dependecy import (
     get_category_repo,
-    get_cache_category_repo,
     get_category_service,
 )
 from app.repository import CategoryRepository
@@ -13,7 +12,6 @@ from app.schema import (
     CreateCategoryRequest,
     UpdateCategoryRequest,
 )
-from app.repository import CategoryCacheRepository
 from app.service import CategoryService
 
 logger = logging.getLogger(__name__)
@@ -37,9 +35,7 @@ async def get_category_by_id(
     category = await repo.get_category_by_id(category_id)
     if not category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
     logger.debug(f"Found category: {category}")
     return category
 
@@ -55,9 +51,7 @@ async def create_category(
     return category
 
 
-@router.put(
-    "/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK
-)
+@router.put("/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK)
 async def update_category(
     category_id: int,
     category: UpdateCategoryRequest,
@@ -67,9 +61,7 @@ async def update_category(
     existing_category = await repo.get_category_by_id(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
 
     updated_category = await repo.update_category(category_id, category)
     logger.debug(f"Updated category: {updated_category}")
@@ -85,9 +77,7 @@ async def delete_category(
     existing_category = await repo.delete_category(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
 
     logger.debug(f"Deleted category: {category_id}")
 
