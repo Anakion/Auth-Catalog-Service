@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "postgres"
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
+    SECRET_KEY: str = "secret"
+    ALGORITHM: str = "HS256"
 
     @property
     def database_url(self) -> str:

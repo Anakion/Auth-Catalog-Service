@@ -8,6 +8,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "black>=25.1.0",
     "fastapi[all]>=0.115.14",
+    "python-jose[cryptography]>=3.5.0",
     "redis>=6.2.0",
     "ruff>=0.12.1",
     "sqlalchemy>=2.0.41",

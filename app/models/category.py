@@ -1,3 +1,4 @@
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from app.database.database import Base
@@ -11,6 +12,7 @@ class Category(Base):
     products: Mapped[list["Product"]] = relationship(
         back_populates="category", lazy="selectin", cascade="all, delete-orphan"
     )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
 
 # lazy="selectin" делает ровно 2 запроса (вместо потенциально сотен при N+1).
