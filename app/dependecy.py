@@ -6,6 +6,7 @@ from app.repository import CategoryRepository, CategoryCacheRepository
 from app.cache import get_redis_connection
 from app.service import CategoryService
 from repository import UserRepository
+from service import AuthService
 from service.user import UserService
 
 
@@ -38,3 +39,9 @@ async def get_user_service(
     user_repository: UserRepository = Depends(get_user_repository),
 ) -> UserService:
     return UserService(user_repository=user_repository)
+
+
+async def get_auth_service(
+    user_repository: UserRepository = Depends(get_user_repository),
+) -> AuthService:
+    return AuthService(user_repository=user_repository)

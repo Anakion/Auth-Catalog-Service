@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import UserProfile
@@ -19,3 +20,7 @@ class UserRepository:
     async def get_user_by_id(self, user_id: int) -> UserProfile | None:
         result = await self.session.get(UserProfile, user_id)
         return result
+
+    async def get_user_by_name(self, user_name: str) -> UserProfile | None:
+        result = await self.session.execute(select(UserProfile).filter_by(username=user_name))
+        return result.scalar_one_or_none()
