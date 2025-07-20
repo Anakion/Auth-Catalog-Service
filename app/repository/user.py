@@ -22,7 +22,5 @@ class UserRepository:
         return result
 
     async def get_user_by_name(self, user_name: str) -> UserProfile | None:
-        result = await self.session.execute(
-            select(UserProfile).filter_by(username=user_name)
-        )
+        result = await self.session.execute(select(UserProfile).filter_by(username=user_name))
         return result.scalar_one_or_none()

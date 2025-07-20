@@ -21,7 +21,7 @@ async def get_all_categories(
     category_service: Annotated[CategoryService, Depends(get_category_service)],
     user_id: int = Depends(get_request_user_id),
 ):
-    return await category_service.get_all_categories()
+    return await category_service.get_all_categories(user_id)
 
 
 @router.get("/{category_id}", response_model=CategoryResponse)
@@ -45,9 +45,7 @@ async def create_category(
     return category
 
 
-@router.put(
-    "/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK
-)
+@router.put("/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK)
 async def update_category(
     category_id: int,
     category: UpdateCategoryRequest,
@@ -57,9 +55,7 @@ async def update_category(
     existing_category = await repo.get_category_by_id(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
 
     updated_category = await repo.update_category(category_id, category)
     logger.debug(f"Updated category: {updated_category}")
@@ -75,9 +71,7 @@ async def delete_category(
     existing_category = await repo.delete_category(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
 
     logger.debug(f"Deleted category: {category_id}")
 

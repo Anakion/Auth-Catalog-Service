@@ -36,7 +36,7 @@ class AuthService:
 
     @staticmethod
     async def generate_access_token(user_id: int) -> str:
-        expires_date_unix = (dt.datetime.utcnow() + timedelta(minutes=2)).timestamp()
+        expires_date_unix = (dt.datetime.utcnow() + timedelta(minutes=4)).timestamp()
         token = jwt.encode(
             {
                 "user_id": user_id,
@@ -50,9 +50,7 @@ class AuthService:
     @staticmethod
     async def get_user_id_from_access_token(access_token: str) -> int:
         try:
-            payload = jwt.decode(
-                access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
-            )
+            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         except JWTError:
             raise TokenNotCorrectException
 
