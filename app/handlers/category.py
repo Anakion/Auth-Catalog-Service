@@ -10,6 +10,7 @@ from app.schema import (
     UpdateCategoryRequest,
 )
 from app.service import CategoryService
+from exception import CategoryNotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,10 @@ async def get_category_by_id(
     category_service: Annotated[CategoryService, Depends(get_category_service)],
     user_id: int = Depends(get_request_user_id),
 ):
-    return await category_service.get_category_by_id(category_id, user_id)
+    try:
+        return await category_service.get_category_by_id(category_id, user_id)
+    except CategoryNotFoundError as e:
+        raise HTTPException(status_code=404, detail=e.detail)
 
 
 @router.post("/", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED)
@@ -39,13 +43,13 @@ async def create_category(
     category_service: Annotated[CategoryService, Depends(get_category_service)],
     user_id: int = Depends(get_request_user_id),
 ):
-    logger.debug(f"Creating category: {category_service}")
     category = await category_service.create_category(body, user_id)
-    logger.debug(f"Created category: {category}")
     return category
 
 
-@router.put("/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK)
+@router.put(
+    "/{category_id}", response_model=CategoryResponse, status_code=status.HTTP_200_OK
+)
 async def update_category(
     category_id: int,
     category: UpdateCategoryRequest,
@@ -55,7 +59,9 @@ async def update_category(
     existing_category = await repo.get_category_by_id(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
+        )
 
     updated_category = await repo.update_category(category_id, category)
     logger.debug(f"Updated category: {updated_category}")
@@ -71,7 +77,9 @@ async def delete_category(
     existing_category = await repo.delete_category(category_id)
     if not existing_category:
         logger.warning(f"Category {category_id} not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
+        )
 
     logger.debug(f"Deleted category: {category_id}")
 

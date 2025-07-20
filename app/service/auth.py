@@ -50,7 +50,9 @@ class AuthService:
     @staticmethod
     async def get_user_id_from_access_token(access_token: str) -> int:
         try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+            payload = jwt.decode(
+                access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            )
         except JWTError:
             raise TokenNotCorrectException
 
