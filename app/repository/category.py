@@ -37,8 +37,14 @@ class CategoryRepository:
         await self.session.commit()
         return result.first()
 
-    async def delete_category(self, category_id) -> bool:
-        category = await self.session.get(Category, category_id)
+    async def delete_category(self, category_id, user_id) -> bool:
+        stmt = select(Category).where(
+            Category.id == category_id,
+            Category.user_id == user_id
+        )
+        result = await self.session.execute(stmt)
+        category = result.scalar_one_or_none()
+
         if not category:
             return False
 
@@ -46,6 +52,7 @@ class CategoryRepository:
         await self.session.commit()
         return True
 
-    async def delete_all_categories(self) -> None:
-        await self.session.execute(delete(Category))
+    async def delete_all_categories(self, user_id: int) -> None:
+        stmt = delete(Category).where(Category.user_id == user_id)
+        await self.session.execute(stmt)
         await self.session.commit()

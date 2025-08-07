@@ -39,10 +39,18 @@ class CategoryService:
         return CategoryResponse.model_validate(category)
 
     async def update_category(
-        self, category_id: int, category: UpdateCategoryRequest, user_id: int
+            self, category_id: int, category: UpdateCategoryRequest, user_id: int
     ) -> CategoryResponse:
         category = await self.category_repository.update_category(category_id, category, user_id)
         if not category:
             raise CategoryNotFoundError
 
         return CategoryResponse.model_validate(category)
+
+    async def delete_category(self, category_id: int, user_id: int) -> None:
+        success = await self.category_repository.delete_category(category_id, user_id)
+        if not success:
+            raise CategoryNotFoundError
+
+    async def delete_all_categories(self, user_id: int) -> None:
+        await self.category_repository.delete_all_categories(user_id)
