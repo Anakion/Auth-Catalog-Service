@@ -10,7 +10,7 @@ from app.schema import (
     UpdateCategoryRequest,
 )
 from app.service import CategoryService
-from exception import CategoryNotFoundError
+from app.exception import CategoryNotFoundError
 
 logger = logging.getLogger(__name__)
 

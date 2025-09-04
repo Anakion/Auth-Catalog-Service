@@ -6,12 +6,4 @@ async def get_redis_connection() -> aioredis.Redis:
     return redis
 
 
-# async def set_category():
-#     redis = await get_redis_connection()
-#     await redis.set("category", "test", ex=60)
-#
-#
-# if __name__ == "__main__":
-#     import asyncio
-#
-#     asyncio.run(set_category())
+

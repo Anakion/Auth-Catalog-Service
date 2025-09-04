@@ -2,10 +2,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from dependecy import get_auth_service
-from schema import UserLoginSchema, UserCreateSchema
-from service import AuthService
-from exception import UserNotFoundException, UserNotCorrectPasswordException
+from app.dependecy import get_auth_service
+from app.schema import UserLoginSchema, UserCreateSchema
+from app.service import AuthService
+from app.exception import UserNotFoundException, UserNotCorrectPasswordException
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

@@ -1,13 +1,13 @@
+from dataclasses import dataclass
 from typing import Optional
 
 import redis.asyncio as aioredis
 
 from app.schema import CategoryResponse
 
-
+@dataclass
 class CategoryCacheRepository:
-    def __init__(self, redis: aioredis.Redis) -> None:
-        self.redis = redis
+    redis: aioredis.Redis
 
     async def get_category(self, user_id: int) -> Optional[list[CategoryResponse]]:
         cache_key = f"categories:user:{user_id}"

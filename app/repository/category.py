@@ -1,13 +1,14 @@
+from dataclasses import dataclass
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Sequence, Optional
 from sqlalchemy import select, delete, update
 from app.models import Category
 from app.schema import CreateCategoryRequest
 
-
+@dataclass
 class CategoryRepository:
-    def __init__(self, session: AsyncSession) -> None:
-        self.session = session
+    session: AsyncSession
 
     async def get_all_categories(self, user_id) -> Sequence[Category]:
         result = await self.session.scalars(select(Category).where(Category.user_id == user_id))

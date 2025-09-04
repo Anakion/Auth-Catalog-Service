@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from app.schema import UserLoginSchema
 from app.repository import UserRepository
-from service.auth import AuthService
+from app.service.auth import AuthService
 
 
 @dataclass

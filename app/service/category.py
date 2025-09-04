@@ -2,8 +2,8 @@ import logging
 from dataclasses import dataclass
 from app.repository import CategoryRepository, CategoryCacheRepository
 from app.schema import CategoryResponse
-from exception import CategoryNotFoundError
-from schema import CreateCategoryRequest, UpdateCategoryRequest
+from app.exception import CategoryNotFoundError
+from app.schema import CreateCategoryRequest, UpdateCategoryRequest
 
 logger = logging.getLogger(__name__)
 
