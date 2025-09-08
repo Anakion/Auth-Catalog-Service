@@ -10,7 +10,7 @@ from app.exception import UserNotFoundException, UserNotCorrectPasswordException
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/login", response_model=UserLoginSchema)
+@router.post("", response_model=UserLoginSchema)
 async def login(
     body: UserCreateSchema,
     auth_service: Annotated[AuthService, Depends(get_auth_service)],

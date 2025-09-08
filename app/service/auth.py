@@ -36,6 +36,7 @@ class AuthService:
 
     @staticmethod
     async def generate_access_token(user_id: int) -> str:
+        print(settings.SECRET_KEY, settings.ALGORITHM)
         expires_date_unix = (dt.datetime.utcnow() + timedelta(minutes=4)).timestamp()
         token = jwt.encode(
             {
